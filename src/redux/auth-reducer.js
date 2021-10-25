@@ -1,59 +1,25 @@
-const FOLLOW = 'FOLLOW';
-const UNFOLLOW = 'UNFOLLOW';
-const SET_USERS = 'SET_USERS';
-const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
-const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT';
-const TOGGLE_IS_LOADING = 'TOGGLE_IS_LOADING';
-
+const SET_USER_DATA = 'SET_USER_DATA';
 
 let initialState = {
-    users: [],
-    pageSize: 5,
-    totalUsersCount: 0,
-    currentPage: 1,
-    isLoading: true
+    id: null ,
+    email: null ,
+    login: null ,
+    isAuth: false
 };
 
-const usersReducer = (state = initialState , action) => {
+const authReducer = (state = initialState , action) => {
     switch (action.type) {
-        case FOLLOW:
-                return {
-                ...state,
-                users: state.users.map( u => {
-                    if (u.id === action.userId) {
-                        return {...u, followed: true}
-                    }
-                    return u;
-                } )
-            }
-        case UNFOLLOW:
+        case SET_USER_DATA:
             return {
-                ...state,
-                users: state.users.map( u => {
-                    if (u.id === action.userId) {
-                        return {...u, followed: false}
-                    }
-                    return u;
-                } )
+                ...state ,
+                ...action.data ,
+                isAuth: true
             }
-        case SET_USERS:
-            return {...state, users: action.users}
-        case SET_CURRENT_PAGE:
-            return {...state, currentPage: action.currentPage}
-        case SET_TOTAL_USERS_COUNT:
-            return {...state, totalUsersCount: action.count}
-        case TOGGLE_IS_LOADING:
-            return {...state, isLoading: action.isLoading}
         default:
             return state;
     }
 };
 
-export const follow = (userId) => ({type: FOLLOW, userId});
-export const unfollow = (userId) => ({type: UNFOLLOW, userId});
-export const setUsers = (users) => ({type: SET_USERS, users});
-export const setCurrentPage = (currentPage) => ({type: SET_CURRENT_PAGE, currentPage});
-export const setTotalUsersCount = (totalUsersCount) => ({type: SET_TOTAL_USERS_COUNT, count: totalUsersCount });
-export const toggleIsLoading = (isLoading) => ({type: TOGGLE_IS_LOADING, isLoading });
+export const setAuthUserData = (userId , email , login) => ({type: SET_USER_DATA , data: {userId , email , login}});
 
-export default usersReducer;
+export default authReducer;
